@@ -67,6 +67,7 @@ flight_data.py         # OpenSky API client with TTL caching
 flight_processor.py    # Distance calc, filtering, sorting, formatting
 display.py             # LED matrix rendering (Pillow + rgbmatrix)
 main.py                # Main loop, threading, graceful shutdown
+emulator.py            # Pygame LED display emulator (no Pi needed)
 install.sh             # One-time Pi setup
 requirements.txt       # Python dependencies
 pyproject.toml         # Project metadata
@@ -78,6 +79,17 @@ pyproject.toml         # Project metadata
 - **Display loop** runs on the main thread at ~10Hz, cycling through flights with double-buffered rendering (no flicker)
 - Route and metadata lookups are cached (1hr and 24hr TTL respectively) to minimize API calls
 - Network failures are handled gracefully — the display retains last known data and never goes blank
+
+## Display emulator
+
+A pygame-based emulator lets you see the full LED display output on any machine — no Pi or hardware needed. Each LED pixel is scaled up 8x with grid lines simulating the physical LED gaps.
+
+```bash
+pip install pygame numpy
+python3 emulator.py
+```
+
+This opens a 1024x256 window showing the exact same pixels, colors, and cycling behavior as the real panels. Close the window or Ctrl+C to exit.
 
 ## Testing without a Pi
 

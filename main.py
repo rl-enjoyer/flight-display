@@ -20,9 +20,9 @@ logger = logging.getLogger(__name__)
 
 
 class FlightTracker:
-    def __init__(self):
+    def __init__(self, display: FlightDisplay | None = None):
         self._client = OpenSkyClient()
-        self._display = FlightDisplay()
+        self._display = display or FlightDisplay()
         self._flights: list[FlightState] = []
         self._lock = threading.Lock()
         self._shutdown = threading.Event()
