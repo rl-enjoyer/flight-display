@@ -25,18 +25,26 @@ When no aircraft are nearby it shows "No flights nearby". On first boot before d
 
 1. Clone this repo onto your Pi
 2. Edit `config.py` — set `HOME_LAT` and `HOME_LON` to your coordinates
-3. Run the install script:
+3. Create a virtual environment and install dependencies:
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -e .
+```
+
+4. Run the install script for hardware-specific setup:
 
 ```bash
 bash install.sh
 ```
 
-This installs system packages, builds the [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) Python bindings, installs Python deps, and disables onboard audio (it conflicts with the matrix GPIO). It also optionally creates a systemd service for auto-start at boot.
+This builds the [rpi-rgb-led-matrix](https://github.com/hzeller/rpi-rgb-led-matrix) Python bindings, installs system packages, and disables onboard audio (it conflicts with the matrix GPIO). It also optionally creates a systemd service for auto-start at boot.
 
-4. Reboot if audio was just disabled, then:
+5. Reboot if audio was just disabled, then:
 
 ```bash
-sudo python3 main.py
+sudo venv/bin/python main.py
 ```
 
 Root is required for GPIO access.
@@ -85,7 +93,9 @@ pyproject.toml         # Project metadata
 A pygame-based emulator lets you see the full LED display output on any machine — no Pi or hardware needed. Each LED pixel is scaled up 8x with grid lines simulating the physical LED gaps.
 
 ```bash
-pip install pygame numpy
+python3 -m venv venv
+source venv/bin/activate
+pip install -e ".[emulator]"
 python3 emulator.py
 ```
 
