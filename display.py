@@ -125,11 +125,11 @@ class FlightDisplay:
 
     def show_flight(self, flight: FlightState, index: int, total: int) -> None:
         """Render one flight's info across 4 rows (left + right aligned)."""
-        # Row 0: callsign + type (left), registration (right)
+        # Row 0: callsign + type (left), route (right)
         callsign = flight.callsign or flight.icao24
         atype = flight.aircraft_type
         left0 = f"{callsign} {atype}" if atype else callsign
-        right0 = flight.registration or ""
+        right0 = format_route(flight.origin_airport, flight.dest_airport)
 
         # Row 1: altitude + speed (left), vertical rate (right)
         alt = format_altitude(flight.baro_altitude)
@@ -137,15 +137,13 @@ class FlightDisplay:
         left1 = f"{alt} {spd}"
         right1 = format_vertical_rate(flight.vertical_rate)
 
-        # Row 2: route (left), heading (right)
-        left2 = format_route(flight.origin_airport, flight.dest_airport)
+        # Row 2: registration (left), heading (right)
+        left2 = flight.registration or ""
         right2 = format_heading(flight.true_track)
 
-        # Row 3: distance (left), position + country (right)
+        # Row 3: distance (left), position (right)
         left3 = format_distance(flight.distance_km)
-        pos = f"[{index + 1}/{total}]"
-        country = flight.origin_country[:2].upper() if flight.origin_country else ""
-        right3 = f"{pos} {country}" if country else pos
+        right3 = f"[{index + 1}/{total}]"
 
         lines = [
             (left0, config.COLOR_CALLSIGN, right0),

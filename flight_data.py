@@ -104,7 +104,7 @@ class OpenSkyClient:
         return flights
 
     def fetch_route(self, callsign: str) -> tuple[str, str]:
-        """Fetch origin/destination airports for a callsign. Returns cached if available."""
+        """Fetch origin/destination airports for a callsign via adsbdb.com."""
         if not callsign:
             return ("", "")
 
@@ -112,9 +112,9 @@ class OpenSkyClient:
         if cached and not cached.expired:
             return cached.value
 
-        url = f"{config.OPENSKY_BASE_URL}/routes"
+        url = f"https://api.adsbdb.com/v0/callsign/{callsign}"
         try:
-            resp = self._session.get(url, params={"callsign": callsign}, timeout=10)
+            resp = self._session.get(url, timeout=10)
             if resp.status_code == 404:
                 self._route_cache[callsign] = _CacheEntry(("", ""), config.FAILED_CACHE_TTL)
                 return ("", "")
@@ -127,9 +127,14 @@ class OpenSkyClient:
             return ("", "")
 
         data = resp.json()
-        route = data.get("route", [])
-        origin = route[0] if len(route) > 0 else ""
-        dest = route[-1] if len(route) > 1 else ""
+        flightroute = data.get("response", {})
+        if isinstance(flightroute, str):
+            # "unknown callsign"
+            self._route_cache[callsign] = _CacheEntry(("", ""), config.FAILED_CACHE_TTL)
+            return ("", "")
+        flightroute = flightroute.get("flightroute", {})
+        origin = (flightroute.get("origin") or {}).get("icao_code", "")
+        dest = (flightroute.get("destination") or {}).get("icao_code", "")
         result = (origin, dest)
         self._route_cache[callsign] = _CacheEntry(result, config.ROUTE_CACHE_TTL)
         return result
