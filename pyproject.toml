@@ -8,5 +8,14 @@ dependencies = [
     "Pillow>=9.0",
 ]
 
+[project.optional-dependencies]
+emulator = [
+    "pygame>=2.5",
+    "numpy>=1.24",
+]
+
+[tool.setuptools]
+py-modules = ["main", "display", "config", "flight_data", "flight_processor", "emulator"]
+
 [project.scripts]
 flight-tracker = "main:main"
