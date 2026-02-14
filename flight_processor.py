@@ -103,6 +103,14 @@ def format_distance(km: float | None) -> str:
     return f"{int(round(km))}km"
 
 
+def format_vertical_rate(mps: float | None) -> str:
+    """Convert m/s vertical rate to fpm string."""
+    if mps is None or abs(mps) < 0.5:
+        return ""
+    fpm = int(round(mps * 196.85))
+    return f"{fpm:+d}fpm"
+
+
 def format_route(origin: str, dest: str) -> str:
     """Format origin>destination, handling missing values."""
     if origin and dest:

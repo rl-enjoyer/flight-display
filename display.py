@@ -13,6 +13,7 @@ from flight_processor import (
     format_heading,
     format_route,
     format_speed,
+    format_vertical_rate,
 )
 
 logger = logging.getLogger(__name__)
@@ -85,13 +86,26 @@ class FlightDisplay:
         except Exception as e:
             logger.error("Failed to initialize matrix: %s", e)
 
-    def _render_to_image(self, lines: list[tuple[str, tuple[int, int, int]]]) -> Image.Image:
-        """Render up to 4 lines of colored text to a Pillow Image."""
+    def _render_to_image(self, lines: list[tuple]) -> Image.Image:
+        """Render up to 4 lines of colored text to a Pillow Image.
+
+        Each element is (left, color) or (left, color, right).
+        When *right* is present and non-empty, it is drawn right-aligned.
+        """
         img = Image.new("RGB", (DISPLAY_WIDTH, DISPLAY_HEIGHT), (0, 0, 0))
         draw = ImageDraw.Draw(img)
-        for i, (text, color) in enumerate(lines[:4]):
+        for i, entry in enumerate(lines[:4]):
             y = i * ROW_HEIGHT
-            draw.text((0, y), text[:MAX_CHARS], font=self._font, fill=color)
+            if len(entry) == 3:
+                left, color, right = entry
+            else:
+                left, color = entry
+                right = ""
+            draw.text((0, y), left[:MAX_CHARS], font=self._font, fill=color)
+            if right:
+                right = right[:MAX_CHARS]
+                rx = DISPLAY_WIDTH - draw.textlength(right, font=self._font)
+                draw.text((rx, y), right, font=self._font, fill=color)
         return img
 
     def _show_image(self, img: Image.Image) -> None:
@@ -110,42 +124,34 @@ class FlightDisplay:
         self._show_image(img)
 
     def show_flight(self, flight: FlightState, index: int, total: int) -> None:
-        """Render one flight's info across 4 rows."""
-        # Row 0: callsign + aircraft type
+        """Render one flight's info across 4 rows (left + right aligned)."""
+        # Row 0: callsign + type (left), registration (right)
         callsign = flight.callsign or flight.icao24
         atype = flight.aircraft_type
-        if atype:
-            line0 = f"{callsign}  {atype}"
-        else:
-            line0 = callsign
+        left0 = f"{callsign} {atype}" if atype else callsign
+        right0 = flight.registration or ""
 
-        # Row 1: altitude + speed
+        # Row 1: altitude + speed (left), vertical rate (right)
         alt = format_altitude(flight.baro_altitude)
         spd = format_speed(flight.velocity)
-        line1 = f"{alt} {spd}"
+        left1 = f"{alt} {spd}"
+        right1 = format_vertical_rate(flight.vertical_rate)
 
-        # Row 2: route + heading
-        route = format_route(flight.origin_airport, flight.dest_airport)
-        hdg = format_heading(flight.true_track)
-        if route:
-            line2 = f"{route} {hdg}"
-        else:
-            line2 = hdg
+        # Row 2: route (left), heading (right)
+        left2 = format_route(flight.origin_airport, flight.dest_airport)
+        right2 = format_heading(flight.true_track)
 
-        # Row 3: distance + position indicator + country
-        dist = format_distance(flight.distance_km)
+        # Row 3: distance (left), position + country (right)
+        left3 = format_distance(flight.distance_km)
         pos = f"[{index + 1}/{total}]"
         country = flight.origin_country[:2].upper() if flight.origin_country else ""
-        line3_parts = [dist, pos]
-        if country:
-            line3_parts.append(country)
-        line3 = " ".join(line3_parts)
+        right3 = f"{pos} {country}" if country else pos
 
         lines = [
-            (line0, config.COLOR_CALLSIGN),
-            (line1, config.COLOR_DATA),
-            (line2, config.COLOR_ROUTE),
-            (line3, config.COLOR_DISTANCE),
+            (left0, config.COLOR_CALLSIGN, right0),
+            (left1, config.COLOR_DATA, right1),
+            (left2, config.COLOR_ROUTE, right2),
+            (left3, config.COLOR_DISTANCE, right3),
         ]
         img = self._render_to_image(lines)
         self._show_image(img)
