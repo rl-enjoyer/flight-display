@@ -1,16 +1,16 @@
 # Flight Tracker LED Matrix Display
 
-Real-time overhead flight tracker that runs on a Raspberry Pi Zero 2 W with an Adafruit RGB Matrix HAT driving 2x chained 64x32 LED panels (128x32 total). It pulls live aircraft data from the [OpenSky Network](https://opensky-network.org/) API and cycles through nearby flights on the display.
+Real-time overhead flight tracker that runs on a Raspberry Pi Zero 2 W with an Adafruit RGB Matrix HAT driving a single 64x32 LED panel. It pulls live aircraft data from the [OpenSky Network](https://opensky-network.org/) API and cycles through nearby flights on the display.
 
 ## What it shows
 
 Each flight gets a 4-line display that cycles every 5 seconds:
 
 ```
-UAL1234  B738          <- callsign + aircraft type (cyan)
-FL350 450kt            <- altitude + speed (white)
-KJFK>EGLL NE045        <- route + heading (green)
-12.3km [2/7] US        <- distance + position + country (amber)
+SWA1648      <- callsign (cyan)
+FL057 293kt  <- altitude + speed (white)
+KMCI>KMDW    <- route (green)
+28km  [1/4]  <- distance + counter (amber)
 ```
 
 When no aircraft are nearby it shows "No flights nearby". On first boot before data arrives it shows "Scanning...".
@@ -19,7 +19,7 @@ When no aircraft are nearby it shows "No flights nearby". On first boot before d
 
 - Raspberry Pi Zero 2 W
 - Adafruit RGB Matrix HAT/Bonnet
-- 2x 64x32 RGB LED matrix panels (HUB75), daisy-chained
+- 64x32 RGB LED matrix panel (HUB75)
 
 ## Setup
 
@@ -99,7 +99,7 @@ pip install -e ".[emulator]"
 python3 emulator.py
 ```
 
-This opens a 1024x256 window showing the exact same pixels, colors, and cycling behavior as the real panels. Close the window or Ctrl+C to exit.
+This opens a 512x256 window showing the exact same pixels, colors, and cycling behavior as the real panel. Close the window or Ctrl+C to exit.
 
 ## Testing without a Pi
 

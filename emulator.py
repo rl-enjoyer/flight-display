@@ -11,7 +11,7 @@ from main import FlightTracker
 # ── Configuration ─────────────────────────────────────────────────
 SCALE = 8  # each LED pixel becomes SCALE×SCALE screen pixels
 GRID_COLOR = (15, 15, 15)  # thin dark lines between pixels
-WINDOW_WIDTH = DISPLAY_WIDTH * SCALE  # 1024
+WINDOW_WIDTH = DISPLAY_WIDTH * SCALE  # 512
 WINDOW_HEIGHT = DISPLAY_HEIGHT * SCALE  # 256
 
 
@@ -35,7 +35,7 @@ class EmulatedDisplay(FlightDisplay):
                 sys.exit(0)
 
         # Convert Pillow RGB image to numpy array, then scale up
-        arr = np.array(img)  # (32, 128, 3)
+        arr = np.array(img)  # (32, 64, 3)
 
         # Create the scaled surface
         surface = pygame.Surface((WINDOW_WIDTH, WINDOW_HEIGHT))

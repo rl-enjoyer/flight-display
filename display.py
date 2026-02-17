@@ -10,10 +10,8 @@ from flight_data import FlightState
 from flight_processor import (
     format_altitude,
     format_distance,
-    format_heading,
     format_route,
     format_speed,
-    format_vertical_rate,
 )
 
 logger = logging.getLogger(__name__)
@@ -124,31 +122,26 @@ class FlightDisplay:
         self._show_image(img)
 
     def show_flight(self, flight: FlightState, index: int, total: int) -> None:
-        """Render one flight's info across 4 rows (left + right aligned)."""
-        # Row 0: callsign + type (left), route (right)
+        """Render one flight's info across 4 rows on a 64-wide display."""
+        # Row 0: callsign (cyan)
         callsign = flight.callsign or flight.icao24
-        atype = flight.aircraft_type
-        left0 = f"{callsign} {atype}" if atype else callsign
-        right0 = format_route(flight.origin_airport, flight.dest_airport)
 
-        # Row 1: altitude + speed (left), vertical rate (right)
+        # Row 1: altitude + speed (white)
         alt = format_altitude(flight.baro_altitude)
         spd = format_speed(flight.velocity)
-        left1 = f"{alt} {spd}"
-        right1 = format_vertical_rate(flight.vertical_rate)
+        row1 = f"{alt} {spd}"
 
-        # Row 2: registration (left), heading (right)
-        left2 = flight.registration or ""
-        right2 = format_heading(flight.true_track)
+        # Row 2: route (green)
+        row2 = format_route(flight.origin_airport, flight.dest_airport)
 
-        # Row 3: distance (left), position (right)
+        # Row 3: distance (left) + counter (right) (amber)
         left3 = format_distance(flight.distance_km)
         right3 = f"[{index + 1}/{total}]"
 
         lines = [
-            (left0, config.COLOR_CALLSIGN, right0),
-            (left1, config.COLOR_DATA, right1),
-            (left2, config.COLOR_ROUTE, right2),
+            (callsign, config.COLOR_CALLSIGN),
+            (row1, config.COLOR_DATA),
+            (row2, config.COLOR_ROUTE),
             (left3, config.COLOR_DISTANCE, right3),
         ]
         img = self._render_to_image(lines)

@@ -23,7 +23,7 @@ EXCLUDE_ON_GROUND = True
 # ── LED Matrix Display ──────────────────────────────────────────────
 MATRIX_ROWS = 32
 MATRIX_COLS = 64
-MATRIX_CHAIN = 2  # 2x chained = 128x32
+MATRIX_CHAIN = 1  # Single 64x32 panel
 HARDWARE_MAPPING = "adafruit-hat"
 GPIO_SLOWDOWN = 2  # Tuned for Pi Zero 2 W
 BRIGHTNESS = 60  # 0-100
