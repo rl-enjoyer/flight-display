@@ -25,10 +25,10 @@ MATRIX_ROWS = 32
 MATRIX_COLS = 64
 MATRIX_CHAIN = 1  # Single 64x32 panel
 HARDWARE_MAPPING = "adafruit-hat"
-GPIO_SLOWDOWN = 2  # Tuned for Pi Zero 2 W
+GPIO_SLOWDOWN = 4  # Tuned for Pi Zero 2 W
 BRIGHTNESS = 60  # 0-100
-PWM_BITS = 7  # Reduced for Pi Zero 2 W CPU
-FLIGHT_CYCLE_INTERVAL = 5  # Seconds per flight on display
+PWM_BITS = 5  # Reduced for Pi Zero 2 W CPU
+FLIGHT_CYCLE_INTERVAL = 10  # Seconds per flight on display
 
 # ── Colors (R, G, B) ────────────────────────────────────────────────
 COLOR_CALLSIGN = (0, 255, 255)  # Cyan
