@@ -101,7 +101,7 @@ class FlightDisplay:
             else:
                 left, color = entry
                 right = ""
-            draw.text((0, y), left[:MAX_CHARS], font=self._font, fill=color)
+            draw.text((1, y), left[:MAX_CHARS], font=self._font, fill=color)
             if right:
                 right = right[:MAX_CHARS]
                 rx = DISPLAY_WIDTH - draw.textlength(right, font=self._font)
@@ -120,7 +120,7 @@ class FlightDisplay:
         img = Image.new("RGB", (DISPLAY_WIDTH, DISPLAY_HEIGHT), (0, 0, 0))
         draw = ImageDraw.Draw(img)
         # Center vertically (row 1 of 4)
-        draw.text((0, ROW_HEIGHT + TEXT_Y_OFFSET), message[:MAX_CHARS], font=self._font, fill=config.COLOR_STATUS)
+        draw.text((1, ROW_HEIGHT + TEXT_Y_OFFSET), message[:MAX_CHARS], font=self._font, fill=config.COLOR_STATUS)
         self._show_image(img)
 
     def show_flight(self, flight: FlightState, index: int, total: int) -> None:

@@ -33,7 +33,7 @@ FLIGHT_CYCLE_INTERVAL = 30  # Seconds per flight on display
 # ── Colors (R, G, B) ────────────────────────────────────────────────
 COLOR_CALLSIGN = (0, 255, 255)  # Cyan
 COLOR_DATA = (255, 255, 255)  # White
-COLOR_ROUTE = (0, 255, 0)  # Green
+COLOR_ROUTE = (0, 255, 255)  # Cyan
 COLOR_DISTANCE = (255, 191, 0)  # Amber
 COLOR_STATUS = (128, 128, 128)  # Gray for status messages
 

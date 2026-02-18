@@ -114,11 +114,11 @@ def format_vertical_rate(mps: float | None) -> str:
 def format_route(origin: str, dest: str) -> str:
     """Format origin>destination, handling missing values."""
     if origin and dest:
-        return f"{origin}>{dest}"
+        return f"{origin} > {dest}"
     if origin:
-        return f"{origin}>?"
+        return f"{origin} > ?"
     if dest:
-        return f"?>{dest}"
+        return f"? > {dest}"
     return ""
 
 
