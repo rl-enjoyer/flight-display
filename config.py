@@ -26,17 +26,17 @@ MATRIX_COLS = 64
 MATRIX_CHAIN = 1  # Single 64x32 panel
 HARDWARE_MAPPING = "adafruit-hat"
 GPIO_SLOWDOWN = 5  # Tuned for Pi Zero 2 W
-LED_RGB_SEQUENCE = "RBG"  # Color channel order for Adafruit 2277 panel
+LED_RGB_SEQUENCE = "RGB"  # Color channel order (default)
 BRIGHTNESS = 60  # 0-100
 PWM_BITS = 5  # Reduced for Pi Zero 2 W CPU
 FLIGHT_CYCLE_INTERVAL = 30  # Seconds per flight on display
 
-# ── Colors (R, G, B) ────────────────────────────────────────────────
-COLOR_CALLSIGN = (0, 255, 255)  # Cyan
-COLOR_DATA = (255, 255, 255)  # White
-COLOR_ROUTE = (255, 255, 255)  # White
-COLOR_DISTANCE = (255, 191, 0)  # Amber
-COLOR_STATUS = (128, 128, 128)  # Gray for status messages
+# ── Colors (R, G, B) — no blue channel on this panel ────────────────
+COLOR_CALLSIGN = (255, 200, 0)  # Amber/gold
+COLOR_DATA = (255, 255, 0)  # Yellow
+COLOR_ROUTE = (0, 255, 0)  # Green
+COLOR_DISTANCE = (255, 100, 0)  # Orange
+COLOR_STATUS = (128, 128, 0)  # Dim yellow
 
 # ── Local overrides (not checked into git) ───────────────────────────
 try:
