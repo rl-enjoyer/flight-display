@@ -21,7 +21,7 @@ DISPLAY_WIDTH = config.MATRIX_COLS * config.MATRIX_CHAIN  # 128
 DISPLAY_HEIGHT = config.MATRIX_ROWS  # 32
 ROW_HEIGHT = 8  # pixels per text row (32px / 4 rows)
 MAX_CHARS = DISPLAY_WIDTH // 4  # chars per row at 4px wide
-TEXT_Y_OFFSET = 1  # vertical offset to center 6px font in 8px row
+TEXT_Y_OFFSET = -1  # vertical offset to shift text up into row
 
 
 def _load_font() -> ImageFont.ImageFont:

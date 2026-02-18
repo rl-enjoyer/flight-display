@@ -28,7 +28,7 @@ HARDWARE_MAPPING = "adafruit-hat"
 GPIO_SLOWDOWN = 4  # Tuned for Pi Zero 2 W
 BRIGHTNESS = 60  # 0-100
 PWM_BITS = 5  # Reduced for Pi Zero 2 W CPU
-FLIGHT_CYCLE_INTERVAL = 10  # Seconds per flight on display
+FLIGHT_CYCLE_INTERVAL = 30  # Seconds per flight on display
 
 # ── Colors (R, G, B) ────────────────────────────────────────────────
 COLOR_CALLSIGN = (0, 255, 255)  # Cyan
