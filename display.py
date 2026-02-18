@@ -20,18 +20,18 @@ logger = logging.getLogger(__name__)
 DISPLAY_WIDTH = config.MATRIX_COLS * config.MATRIX_CHAIN  # 128
 DISPLAY_HEIGHT = config.MATRIX_ROWS  # 32
 ROW_HEIGHT = 8  # pixels per text row (32px / 4 rows)
-MAX_CHARS = DISPLAY_WIDTH // 4  # chars per row at 4px wide
-TEXT_Y_OFFSET = -1  # vertical offset to shift text up into row
+MAX_CHARS = DISPLAY_WIDTH // 5  # chars per row at 5px wide
+TEXT_Y_OFFSET = -2  # shift text up to avoid bottom cutoff with 8px font in 8px row
 
 
 def _load_font() -> ImageFont.ImageFont:
     """Load a small bitmap/TTF font suitable for LED matrix rendering."""
     # Try the BDF font shipped with rpi-rgb-led-matrix
-    # 4x6 gives clean spacing on 32px-high displays (4 rows, 2px gap each)
+    # 5x8: glyphs are ~4px wide in a 5px cell, giving 1px gap between chars
     bdf_paths = [
-        "/usr/local/share/fonts/4x6.bdf",
-        "/home/pi/rpi-rgb-led-matrix/fonts/4x6.bdf",
-        "/opt/rpi-rgb-led-matrix/fonts/4x6.bdf",
+        "/usr/local/share/fonts/5x8.bdf",
+        "/home/pi/rpi-rgb-led-matrix/fonts/5x8.bdf",
+        "/opt/rpi-rgb-led-matrix/fonts/5x8.bdf",
     ]
     for path in bdf_paths:
         try:
