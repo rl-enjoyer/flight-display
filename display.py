@@ -76,6 +76,7 @@ class FlightDisplay:
             options.gpio_slowdown = config.GPIO_SLOWDOWN
             options.brightness = config.BRIGHTNESS
             options.pwm_bits = config.PWM_BITS
+            options.led_rgb_sequence = config.LED_RGB_SEQUENCE
             options.drop_privileges = False
 
             self._matrix = RGBMatrix(options=options)
